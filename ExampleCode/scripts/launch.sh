@@ -8,7 +8,7 @@
 #! /bin/sh
 
 if [[ -z "${ARCH}" ]]; then
-   ARCH=x64Linux3gcc5.4.0
+   ARCH=x64Linux4gcc7.3.0
 fi
 EXE_DIR=../objs/${ARCH}
 
