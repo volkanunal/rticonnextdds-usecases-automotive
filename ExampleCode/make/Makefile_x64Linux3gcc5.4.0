@@ -20,7 +20,7 @@
 
 # Defines required Make variables. They will be used in the Makefile.common
 # to define the rules to define the build process for this application.
-ARCH = x64Linux3gcc5.4.0
+ARCH = x64Linux4gcc7.3.0
 
 ifndef COMPILER
 COMPILER = g++
