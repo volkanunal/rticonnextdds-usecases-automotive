@@ -17,6 +17,91 @@ use or inability to use the software.
 #include "automotiveSupport.h"
 #include "ndds/ndds_cpp.h"
 
+////////////////////////////////////////////////////////////////////////////////
+class Hello_HelloWorldListenerClass : public DDSDataReaderListener {
+    public:
+    virtual void on_requested_deadline_missed(
+        DDSDataReader* /*reader*/,
+        const DDS_RequestedDeadlineMissedStatus& /*status*/) {
+        printf("on_requested_deadline_missed\n");
+    }
+
+    virtual void on_requested_incompatible_qos(
+        DDSDataReader* /*reader*/,
+        const DDS_RequestedIncompatibleQosStatus& /*status*/) {
+        printf("on_requested_incompatible_qos\n");
+    }
+
+    virtual void on_sample_rejected(
+        DDSDataReader* /*reader*/,
+        const DDS_SampleRejectedStatus& /*status*/) {
+        printf("on_sample_rejected\n");
+    }
+
+    virtual void on_liveliness_changed(
+        DDSDataReader* /*reader*/,
+        const DDS_LivelinessChangedStatus& /*status*/) {
+        printf("on_liveliness_changed\n");
+    }
+
+    virtual void on_sample_lost(
+        DDSDataReader* /*reader*/,
+        const DDS_SampleLostStatus& /*status*/) {
+        printf("on_sample_lost\n");
+    }
+
+    virtual void on_subscription_matched(
+        DDSDataReader* /*reader*/,
+        const DDS_SubscriptionMatchedStatus& /*status*/) {
+        printf("on_subscription_matched\n");
+    }
+
+    virtual void on_data_available(DDSDataReader* reader);
+};
+
+void Hello_HelloWorldListenerClass::on_data_available(DDSDataReader* reader)
+{
+    Helloworld_HelloWordMessageDataReader *HelloWorldMessage_reader = NULL;
+    Helloworld_HelloWordMessageSeq data_seq;
+    DDS_SampleInfoSeq info_seq;
+    DDS_ReturnCode_t retcode;
+    int i;
+
+    HelloWorldMessage_reader = Helloworld_HelloWordMessageDataReader::narrow(reader);
+    if (HelloWorldMessage_reader == NULL) {
+        printf("DataReader narrow error\n");
+        return;
+    }
+
+    /* Read all samples */
+    retcode = HelloWorldMessage_reader->take(
+        data_seq, info_seq, DDS_LENGTH_UNLIMITED,
+        DDS_ANY_SAMPLE_STATE, DDS_ANY_VIEW_STATE, DDS_ANY_INSTANCE_STATE);
+
+    if (retcode == DDS_RETCODE_NO_DATA) {
+        return;
+    }
+    else if (retcode != DDS_RETCODE_OK) {
+        printf("take error %d\n", retcode);
+        return;
+    }
+
+    for (i = 0; i < data_seq.length(); ++i) {
+        
+        if (info_seq[i].valid_data) {
+            /* Print the data and store some data for use in the status message*/
+            Helloworld_HelloWordMessageTypeSupport::print_data(&data_seq[i]);
+            
+        }
+    }
+
+    retcode = HelloWorldMessage_reader->return_loan(data_seq, info_seq);
+    if (retcode != DDS_RETCODE_OK) {
+        printf("return loan error %d\n", retcode);
+    }
+}
+////////////////////////////////////////////////////////////////////////////////
+
 class Alerts_DriverAlertsListener : public DDSDataReaderListener {
   public:
     virtual void on_requested_deadline_missed(
@@ -83,12 +168,13 @@ static int subscriber_shutdown(
     return status;
 }
 
+
 extern "C" int subscriber_main(int sample_count)
 {
     DDSDomainParticipant *participant = NULL;
     DDSSubscriber *subscriber = NULL;
     DDSTopic *topic = NULL;
-    Alerts_DriverAlertsListener *reader_listener = NULL; 
+    Alerts_DriverAlertsListener *reader_listener = NULL;     
     DDSDataReader *reader = NULL;
     DDS_ReturnCode_t retcode;
     const char *type_name = NULL;
@@ -98,6 +184,10 @@ extern "C" int subscriber_main(int sample_count)
     DDSWaitSet *waitset = NULL;
     Alerts_DriverAlertsDataReader *Alerts_DriverAlerts_reader = NULL;
     DDS_Duration_t timeout = { 10, 0 };
+
+    /////////////////////////////////////////////////
+    Hello_HelloWorldListenerClass* hello_reader_listener = NULL;
+    /////////////////////////////////////////////////
 
     /* Read the properties and configure */
     PropertyUtil* prop = new PropertyUtil("hmi.properties");
@@ -109,11 +199,25 @@ extern "C" int subscriber_main(int sample_count)
         return -1;
     }
 
+    std::string HelloTopicName = prop->getStringProperty("topic.Hello");
+    if (HelloTopicName == "") {
+        printf("No planning topic name specified\n");
+        return -1;
+    }
+
+    std::string HelloQosProfile = prop->getStringProperty("qos.Hello.Profile");
+    if (HelloQosProfile == "") {
+        printf("No Planning QoS Profile specified\n");
+        return -1;
+    }
+
     std::string qosLibrary = prop->getStringProperty("qos.Library");
     if (qosLibrary == "") {
         printf("No QoS Library specified\n");
         return -1;
     }
+
+
     std::string qosProfile = prop->getStringProperty("qos.Profile");
     if (qosProfile == "") {
         printf("No QoS Profile specified\n");
@@ -225,6 +329,41 @@ extern "C" int subscriber_main(int sample_count)
         delete waitset;
         return -1;
     }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    type_name = Helloworld_HelloWordMessageTypeSupport::get_type_name();
+    retcode = Helloworld_HelloWordMessageTypeSupport::register_type(
+        participant, type_name);
+    if (retcode != DDS_RETCODE_OK) {
+        printf("register_type error %d\n", retcode);
+        subscriber_shutdown(participant);
+        return -1;
+    }
+
+
+    topic = participant->create_topic_with_profile(
+        HelloTopicName.c_str(),
+        type_name, qosLibrary.c_str(), HelloQosProfile.c_str(), NULL /* listener */,
+        DDS_STATUS_MASK_NONE);
+    if (topic == NULL) {
+        printf("create_topic error\n");
+        subscriber_shutdown(participant);
+        return -1;
+    }
+
+    hello_reader_listener = new Hello_HelloWorldListenerClass();
+
+    reader = subscriber->create_datareader_with_profile(
+        topic, qosLibrary.c_str(), HelloQosProfile.c_str(), hello_reader_listener,
+        DDS_STATUS_MASK_ALL);
+    if (reader == NULL) {
+        printf("create_datareader error\n");
+        subscriber_shutdown(participant);
+        return -1;
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////
+
 
     /* Main loop */
     for (count=0; (sample_count == 0) || (count < sample_count); ++count) {

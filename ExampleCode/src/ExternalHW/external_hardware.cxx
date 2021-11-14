@@ -41,7 +41,7 @@ extern "C" int publisher_main(int sample_count)
     int domainId = 0;
     const char *type_name = NULL;
     DDS_ReturnCode_t retcode;
-    DDS_Duration_t send_period = {4,0};
+    DDS_Duration_t send_period = {20,0};
 
 
     PropertyUtil* prop = new PropertyUtil("hello_world.properties");
@@ -132,7 +132,7 @@ extern "C" int publisher_main(int sample_count)
     }
 
     for (int count=0; (sample_count == 0) || (count < sample_count); ++count) {
-        
+
         printf("\r\n Hello World Message Sended");
         
         if (count % 2 == 0) {
@@ -167,9 +167,7 @@ int main(int argc, char *argv[])
     if (argc >= 2) {
         sample_count = atoi(argv[1]);
     }
-
-    printf("\r\n Hello World Window");
-
+    
     /* Uncomment this to turn on additional logging
     NDDSConfigLogger::get_instance()->
     set_verbosity_by_category(NDDS_CONFIG_LOG_CATEGORY_API, 
