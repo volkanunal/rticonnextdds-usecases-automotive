@@ -1701,6 +1701,362 @@ RTIBool Alerts_DriverAlerts_copy(
 #undef T
 
 /* ========================================================================= */
+const char *Helloworld_HelloWordMessageTYPENAME = "Helloworld::HelloWordMessage";
+
+#ifndef NDDS_STANDALONE_TYPE
+DDS_TypeCode * Helloworld_HelloWordMessage_get_typecode(void)
+{
+    static RTIBool is_initialized = RTI_FALSE;
+
+    static DDS_TypeCode Helloworld_HelloWordMessage_g_tc_msg_string = DDS_INITIALIZE_STRING_TYPECODE((256L));
+
+    static DDS_TypeCode_Member Helloworld_HelloWordMessage_g_tc_members[1]=
+    {
+
+        {
+            (char *)"msg",/* Member name */
+            {
+                0,/* Representation ID */
+                DDS_BOOLEAN_FALSE,/* Is a pointer? */
+                -1, /* Bitfield bits */
+                NULL/* Member type code is assigned later */
+            },
+            0, /* Ignored */
+            0, /* Ignored */
+            0, /* Ignored */
+            NULL, /* Ignored */
+            RTI_CDR_REQUIRED_MEMBER, /* Is a key? */
+            DDS_PUBLIC_MEMBER,/* Member visibility */
+            1,
+            NULL, /* Ignored */
+            RTICdrTypeCodeAnnotations_INITIALIZER
+        }
+    };
+
+    static DDS_TypeCode Helloworld_HelloWordMessage_g_tc =
+    {{
+            DDS_TK_STRUCT, /* Kind */
+            DDS_BOOLEAN_FALSE, /* Ignored */
+            -1, /*Ignored*/
+            (char *)"Helloworld::HelloWordMessage", /* Name */
+            NULL, /* Ignored */      
+            0, /* Ignored */
+            0, /* Ignored */
+            NULL, /* Ignored */
+            1, /* Number of members */
+            Helloworld_HelloWordMessage_g_tc_members, /* Members */
+            DDS_VM_NONE, /* Ignored */
+            RTICdrTypeCodeAnnotations_INITIALIZER,
+            DDS_BOOLEAN_TRUE, /* _isCopyable */
+            NULL, /* _sampleAccessInfo: assigned later */
+            NULL /* _typePlugin: assigned later */
+        }}; /* Type code for Helloworld_HelloWordMessage*/
+
+    if (is_initialized) {
+        return &Helloworld_HelloWordMessage_g_tc;
+    }
+
+    Helloworld_HelloWordMessage_g_tc._data._annotations._allowedDataRepresentationMask = 5;
+
+    Helloworld_HelloWordMessage_g_tc_members[0]._representation._typeCode = (RTICdrTypeCode *)&Helloworld_HelloWordMessage_g_tc_msg_string;
+
+    /* Initialize the values for member annotations. */
+    Helloworld_HelloWordMessage_g_tc_members[0]._annotations._defaultValue._d = RTI_XCDR_TK_STRING;
+    Helloworld_HelloWordMessage_g_tc_members[0]._annotations._defaultValue._u.string_value = (DDS_Char *) "";
+
+    Helloworld_HelloWordMessage_g_tc._data._sampleAccessInfo =
+    Helloworld_HelloWordMessage_get_sample_access_info();
+    Helloworld_HelloWordMessage_g_tc._data._typePlugin =
+    Helloworld_HelloWordMessage_get_type_plugin_info();    
+
+    is_initialized = RTI_TRUE;
+
+    return &Helloworld_HelloWordMessage_g_tc;
+}
+
+#define TSeq Helloworld_HelloWordMessageSeq
+#define T Helloworld_HelloWordMessage
+#include "dds_cpp/generic/dds_cpp_data_TInterpreterSupport.gen"
+#undef T
+#undef TSeq
+
+RTIXCdrSampleAccessInfo *Helloworld_HelloWordMessage_get_sample_seq_access_info()
+{
+    static RTIXCdrSampleAccessInfo Helloworld_HelloWordMessage_g_seqSampleAccessInfo = {
+        RTI_XCDR_TYPE_BINDING_CPP, \
+        {sizeof(Helloworld_HelloWordMessageSeq),0,0,0}, \
+        RTI_XCDR_FALSE, \
+        DDS_Sequence_get_member_value_pointer, \
+        Helloworld_HelloWordMessageSeq_set_member_element_count, \
+        NULL, \
+        NULL, \
+        NULL \
+    };
+
+    return &Helloworld_HelloWordMessage_g_seqSampleAccessInfo;
+}
+
+RTIXCdrSampleAccessInfo *Helloworld_HelloWordMessage_get_sample_access_info()
+{
+    static RTIBool is_initialized = RTI_FALSE;
+
+    Helloworld_HelloWordMessage *sample;
+
+    static RTIXCdrMemberAccessInfo Helloworld_HelloWordMessage_g_memberAccessInfos[1] =
+    {RTIXCdrMemberAccessInfo_INITIALIZER};
+
+    static RTIXCdrSampleAccessInfo Helloworld_HelloWordMessage_g_sampleAccessInfo = 
+    RTIXCdrSampleAccessInfo_INITIALIZER;
+
+    if (is_initialized) {
+        return (RTIXCdrSampleAccessInfo*) &Helloworld_HelloWordMessage_g_sampleAccessInfo;
+    }
+
+    RTIXCdrHeap_allocateStruct(
+        &sample, 
+        Helloworld_HelloWordMessage);
+    if (sample == NULL) {
+        return NULL;
+    }
+
+    Helloworld_HelloWordMessage_g_memberAccessInfos[0].bindingMemberValueOffset[0] = 
+    (RTIXCdrUnsignedLong) ((char *)&sample->msg - (char *)sample);
+
+    Helloworld_HelloWordMessage_g_sampleAccessInfo.memberAccessInfos = 
+    Helloworld_HelloWordMessage_g_memberAccessInfos;
+
+    {
+        size_t candidateTypeSize = sizeof(Helloworld_HelloWordMessage);
+
+        if (candidateTypeSize > RTIXCdrLong_MAX) {
+            Helloworld_HelloWordMessage_g_sampleAccessInfo.typeSize[0] =
+            RTIXCdrLong_MAX;
+        } else {
+            Helloworld_HelloWordMessage_g_sampleAccessInfo.typeSize[0] =
+            (RTIXCdrUnsignedLong) candidateTypeSize;
+        }
+    }
+
+    Helloworld_HelloWordMessage_g_sampleAccessInfo.useGetMemberValueOnlyWithRef =
+    RTI_XCDR_TRUE;
+
+    Helloworld_HelloWordMessage_g_sampleAccessInfo.getMemberValuePointerFcn = 
+    Helloworld_HelloWordMessage_get_member_value_pointer;
+
+    Helloworld_HelloWordMessage_g_sampleAccessInfo.languageBinding = 
+    RTI_XCDR_TYPE_BINDING_CPP ;
+
+    RTIXCdrHeap_freeStruct(sample);
+    is_initialized = RTI_TRUE;
+    return (RTIXCdrSampleAccessInfo*) &Helloworld_HelloWordMessage_g_sampleAccessInfo;
+}
+
+RTIXCdrTypePlugin *Helloworld_HelloWordMessage_get_type_plugin_info()
+{
+    static RTIXCdrTypePlugin Helloworld_HelloWordMessage_g_typePlugin = 
+    {
+        NULL, /* serialize */
+        NULL, /* serialize_key */
+        NULL, /* deserialize_sample */
+        NULL, /* deserialize_key_sample */
+        NULL, /* skip */
+        NULL, /* get_serialized_sample_size */
+        NULL, /* get_serialized_sample_max_size_ex */
+        NULL, /* get_serialized_key_max_size_ex */
+        NULL, /* get_serialized_sample_min_size */
+        NULL, /* serialized_sample_to_key */
+        (RTIXCdrTypePluginInitializeSampleFunction) 
+        Helloworld_HelloWordMessage_initialize_ex,
+        NULL,
+        (RTIXCdrTypePluginFinalizeSampleFunction)
+        Helloworld_HelloWordMessage_finalize_w_return,
+        NULL
+    };
+
+    return &Helloworld_HelloWordMessage_g_typePlugin;
+}
+#endif
+
+RTIBool Helloworld_HelloWordMessage_initialize(
+    Helloworld_HelloWordMessage* sample) {
+    return Helloworld_HelloWordMessage_initialize_ex(sample,RTI_TRUE,RTI_TRUE);
+}
+
+RTIBool Helloworld_HelloWordMessage_initialize_ex(
+    Helloworld_HelloWordMessage* sample,RTIBool allocatePointers, RTIBool allocateMemory)
+{
+
+    struct DDS_TypeAllocationParams_t allocParams =
+    DDS_TYPE_ALLOCATION_PARAMS_DEFAULT;
+
+    allocParams.allocate_pointers =  (DDS_Boolean)allocatePointers;
+    allocParams.allocate_memory = (DDS_Boolean)allocateMemory;
+
+    return Helloworld_HelloWordMessage_initialize_w_params(
+        sample,&allocParams);
+
+}
+
+RTIBool Helloworld_HelloWordMessage_initialize_w_params(
+    Helloworld_HelloWordMessage* sample, const struct DDS_TypeAllocationParams_t * allocParams)
+{
+
+    if (sample == NULL) {
+        return RTI_FALSE;
+    }
+    if (allocParams == NULL) {
+        return RTI_FALSE;
+    }
+
+    if (allocParams->allocate_memory) {
+        sample->msg = DDS_String_alloc((256L));
+        RTICdrType_copyStringEx(
+            &sample->msg,
+            "",
+            (256L),
+            RTI_FALSE);
+        if (sample->msg == NULL) {
+            return RTI_FALSE;
+        }
+    } else {
+        if (sample->msg != NULL) {
+            RTICdrType_copyStringEx(
+                &sample->msg,
+                "",
+                (256L),
+                RTI_FALSE);
+            if (sample->msg == NULL) {
+                return RTI_FALSE;
+            }
+        }
+    }
+
+    return RTI_TRUE;
+}
+
+RTIBool Helloworld_HelloWordMessage_finalize_w_return(
+    Helloworld_HelloWordMessage* sample)
+{
+    Helloworld_HelloWordMessage_finalize_ex(sample, RTI_TRUE);
+
+    return RTI_TRUE;
+}
+
+void Helloworld_HelloWordMessage_finalize(
+    Helloworld_HelloWordMessage* sample)
+{
+
+    Helloworld_HelloWordMessage_finalize_ex(sample,RTI_TRUE);
+}
+
+void Helloworld_HelloWordMessage_finalize_ex(
+    Helloworld_HelloWordMessage* sample,RTIBool deletePointers)
+{
+    struct DDS_TypeDeallocationParams_t deallocParams =
+    DDS_TYPE_DEALLOCATION_PARAMS_DEFAULT;
+
+    if (sample==NULL) {
+        return;
+    } 
+
+    deallocParams.delete_pointers = (DDS_Boolean)deletePointers;
+
+    Helloworld_HelloWordMessage_finalize_w_params(
+        sample,&deallocParams);
+}
+
+void Helloworld_HelloWordMessage_finalize_w_params(
+    Helloworld_HelloWordMessage* sample,const struct DDS_TypeDeallocationParams_t * deallocParams)
+{
+
+    if (sample==NULL) {
+        return;
+    }
+
+    if (deallocParams == NULL) {
+        return;
+    }
+
+    if (sample->msg != NULL) {
+        DDS_String_free(sample->msg);
+        sample->msg=NULL;
+
+    }
+}
+
+void Helloworld_HelloWordMessage_finalize_optional_members(
+    Helloworld_HelloWordMessage* sample, RTIBool deletePointers)
+{
+    struct DDS_TypeDeallocationParams_t deallocParamsTmp =
+    DDS_TYPE_DEALLOCATION_PARAMS_DEFAULT;
+    struct DDS_TypeDeallocationParams_t * deallocParams =
+    &deallocParamsTmp;
+
+    if (sample==NULL) {
+        return;
+    } 
+    if (deallocParams) {} /* To avoid warnings */
+
+    deallocParamsTmp.delete_pointers = (DDS_Boolean)deletePointers;
+    deallocParamsTmp.delete_optional_members = DDS_BOOLEAN_TRUE;
+
+}
+
+RTIBool Helloworld_HelloWordMessage_copy(
+    Helloworld_HelloWordMessage* dst,
+    const Helloworld_HelloWordMessage* src)
+{
+    try {
+
+        if (dst == NULL || src == NULL) {
+            return RTI_FALSE;
+        }
+
+        if (!RTICdrType_copyStringEx (
+            &dst->msg, src->msg, 
+            (256L) + 1, RTI_FALSE)){
+            return RTI_FALSE;
+        }
+
+        return RTI_TRUE;
+
+    } catch (const std::bad_alloc&) {
+        return RTI_FALSE;
+    }
+}
+
+/**
+* <<IMPLEMENTATION>>
+*
+* Defines:  TSeq, T
+*
+* Configure and implement 'Helloworld_HelloWordMessage' sequence class.
+*/
+#define T Helloworld_HelloWordMessage
+#define TSeq Helloworld_HelloWordMessageSeq
+
+#define T_initialize_w_params Helloworld_HelloWordMessage_initialize_w_params
+
+#define T_finalize_w_params   Helloworld_HelloWordMessage_finalize_w_params
+#define T_copy       Helloworld_HelloWordMessage_copy
+
+#ifndef NDDS_STANDALONE_TYPE
+#include "dds_c/generic/dds_c_sequence_TSeq.gen"
+#include "dds_cpp/generic/dds_cpp_sequence_TSeq.gen"
+#else
+#include "dds_c_sequence_TSeq.gen"
+#include "dds_cpp_sequence_TSeq.gen"
+#endif
+
+#undef T_copy
+#undef T_finalize_w_params
+
+#undef T_initialize_w_params
+
+#undef TSeq
+#undef T
+
+/* ========================================================================= */
 const char *Lane_ConfidenceEnumTYPENAME = "Lane::ConfidenceEnum";
 
 #ifndef NDDS_STANDALONE_TYPE
@@ -11343,6 +11699,11 @@ namespace rti {
         const RTIXCdrTypeCode * type_code<Alerts_DriverAlerts>::get() 
         {
             return (const RTIXCdrTypeCode *) Alerts_DriverAlerts_get_typecode();
+        }
+
+        const RTIXCdrTypeCode * type_code<Helloworld_HelloWordMessage>::get() 
+        {
+            return (const RTIXCdrTypeCode *) Helloworld_HelloWordMessage_get_typecode();
         }
 
         const RTIXCdrTypeCode * type_code<Lane_LaneObject>::get() 

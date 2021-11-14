@@ -9,8 +9,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the Code Generator User's Manual.
 */
 
-#ifndef automotiveSupport_2097331918_h
-#define automotiveSupport_2097331918_h
+#ifndef automotiveSupport_2097332004_h
+#define automotiveSupport_2097332004_h
 
 /* Uses */
 #include "automotive.h"
@@ -89,6 +89,41 @@ DDS_DATAWRITER_WITH_DATA_CONSTRUCTOR_METHODS_CPP(Alerts_DriverAlertsDataWriter, 
 #undef ENABLE_TDATAWRITER_DATA_CONSTRUCTOR_METHODS
 #define ENABLE_TDATAREADER_DATA_CONSISTENCY_CHECK_METHOD
 DDS_DATAREADER_W_DATA_CONSISTENCY_CHECK(Alerts_DriverAlertsDataReader, Alerts_DriverAlertsSeq, Alerts_DriverAlerts);
+#undef ENABLE_TDATAREADER_DATA_CONSISTENCY_CHECK_METHOD
+
+#if (defined(RTI_WIN32) || defined (RTI_WINCE) || defined(RTI_INTIME)) && defined(NDDS_USER_DLL_EXPORT)
+/* If the code is building on Windows, stop exporting symbols.
+*/
+#undef NDDSUSERDllExport
+#define NDDSUSERDllExport
+#endif
+/* ========================================================================= */
+/**
+Uses:     T
+
+Defines:  TTypeSupport, TDataWriter, TDataReader
+
+Organized using the well-documented "Generics Pattern" for
+implementing generics in C and C++.
+*/
+
+#if (defined(RTI_WIN32) || defined (RTI_WINCE) || defined(RTI_INTIME)) && defined(NDDS_USER_DLL_EXPORT)
+/* If the code is building on Windows, start exporting symbols.
+*/
+#undef NDDSUSERDllExport
+#define NDDSUSERDllExport __declspec(dllexport)
+
+#endif
+
+DDS_TYPESUPPORT_CPP(
+    Helloworld_HelloWordMessageTypeSupport, 
+    Helloworld_HelloWordMessage);
+
+#define ENABLE_TDATAWRITER_DATA_CONSTRUCTOR_METHODS
+DDS_DATAWRITER_WITH_DATA_CONSTRUCTOR_METHODS_CPP(Helloworld_HelloWordMessageDataWriter, Helloworld_HelloWordMessage);
+#undef ENABLE_TDATAWRITER_DATA_CONSTRUCTOR_METHODS
+#define ENABLE_TDATAREADER_DATA_CONSISTENCY_CHECK_METHOD
+DDS_DATAREADER_W_DATA_CONSISTENCY_CHECK(Helloworld_HelloWordMessageDataReader, Helloworld_HelloWordMessageSeq, Helloworld_HelloWordMessage);
 #undef ENABLE_TDATAREADER_DATA_CONSISTENCY_CHECK_METHOD
 
 #if (defined(RTI_WIN32) || defined (RTI_WINCE) || defined(RTI_INTIME)) && defined(NDDS_USER_DLL_EXPORT)
@@ -728,5 +763,5 @@ DDS_DATAREADER_W_DATA_CONSISTENCY_CHECK(CameraImage_CameraImageDataDataReader, C
 #define NDDSUSERDllExport
 #endif
 
-#endif  /* automotiveSupport_2097331918_h */
+#endif  /* automotiveSupport_2097332004_h */
 

@@ -40,6 +40,16 @@ SOURCES_DATA_UTIL   = src/common/dataObject.cxx
 SOURCES_DATA_NODIR  = $(notdir $(SOURCES_DATA_UTIL))
 DATA_OBJS           = $(SOURCES_DATA_NODIR:%.cxx=objs/$(ARCH)/%.o)
 
+###############################################################################
+# Hello World
+###############################################################################
+
+SOURCES_HELLO        = src/ExternalHW/external_hardware.cxx
+
+SOURCES_HELLO_NODIR  = $(notdir $(SOURCES_HELLO))
+HELLO_OBJS           = $(SOURCES_HELLO_NODIR:%.cxx=objs/$(ARCH)/%.o)
+HELLO_EXE            = objs/$(ARCH)/HelloWorld
+
 
 ###############################################################################
 # Vision Sensor
@@ -138,7 +148,7 @@ DIRECTORIES = objs.dir objs/$(ARCH).dir
 # Build Rules
 ###############################################################################
 
-all: $(DIRECTORIES) Vision Collision_Avoidance HMI Lidar CameraImageDataSub CameraImageDataPub Sensor_Fusion Vehicle_Platform
+all: $(DIRECTORIES) Vision Collision_Avoidance HMI Lidar CameraImageDataSub CameraImageDataPub Sensor_Fusion Vehicle_Platform ExternalHW
 
 Vision:			$(DIRECTORIES) $(IDL_OBJS) $(DATA_OBJS) \
 			$(PROP_OBJS) $(VISION_OBJS)
@@ -180,6 +190,15 @@ Vehicle_Platform:	$(DIRECTORIES) $(IDL_OBJS) $(DATA_OBJS) \
 			$(LINKER) $(LINKER_FLAGS)   -o $(VP_EXE) $(IDL_OBJS) \
 			$(DATA_OBJS) $(PROP_OBJS) $(VP_OBJS) $(LIBS)
 
+Vehicle_Platform:	$(DIRECTORIES) $(IDL_OBJS) $(DATA_OBJS) \
+			$(PROP_OBJS) $(VP_OBJS)
+			$(LINKER) $(LINKER_FLAGS)   -o $(VP_EXE) $(IDL_OBJS) \
+			$(DATA_OBJS) $(PROP_OBJS) $(VP_OBJS) $(LIBS)
+
+ExternalHW:		$(DIRECTORIES) $(IDL_OBJS) $(PROP_OBJS) \
+			$(HELLO_OBJS)
+			$(LINKER) $(LINKER_FLAGS)   -o $(HELLO_EXE) $(IDL_OBJS) \
+			$(PROP_OBJS) $(HELLO_OBJS) $(LIBS)
 
 #
 # Build rules
@@ -213,6 +232,9 @@ objs/$(ARCH)/%.o : src/Sensor_Fusion/%.cxx
 		$(COMPILER) $(COMPILER_FLAGS)  -o $@ $(DEFINES) $(INCLUDES) -c $<
 
 objs/$(ARCH)/%.o : src/Vehicle_Platform/%.cxx
+		$(COMPILER) $(COMPILER_FLAGS)  -o $@ $(DEFINES) $(INCLUDES) -c $<
+
+objs/$(ARCH)/%.o : src/ExternalHW/%.cxx
 		$(COMPILER) $(COMPILER_FLAGS)  -o $@ $(DEFINES) $(INCLUDES) -c $<
 
 

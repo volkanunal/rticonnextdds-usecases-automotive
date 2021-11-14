@@ -335,6 +335,7 @@ extern "C" int publisher_main(int sample_count)
         data->get(5, instance->posGasPedal);
 
         /* send the sample */
+        printf("\r\n Sample Sended");
         retcode = Platform_PlatformStatus_writer->write(*instance, instance_handle);
         if (retcode != DDS_RETCODE_OK) {
             printf("write error %d\n", retcode);

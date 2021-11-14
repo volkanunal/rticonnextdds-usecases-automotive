@@ -241,6 +241,114 @@ TDataWriter,
 TDataReader,
 TTypeSupport
 
+Configure and implement 'Helloworld_HelloWordMessage' support classes.
+
+Note: Only the #defined classes get defined
+*/
+
+/* ----------------------------------------------------------------- */
+/* DDSDataWriter
+*/
+
+/**
+<<IMPLEMENTATION >>
+
+Defines:   TDataWriter, TData
+*/
+
+/* Requires */
+#define TTYPENAME   Helloworld_HelloWordMessageTYPENAME
+
+/* Defines */
+#define TDataWriter Helloworld_HelloWordMessageDataWriter
+#define TData       Helloworld_HelloWordMessage
+
+#define ENABLE_TDATAWRITER_DATA_CONSTRUCTOR_METHODS
+#include "dds_cpp/generic/dds_cpp_data_TDataWriter.gen"
+#undef ENABLE_TDATAWRITER_DATA_CONSTRUCTOR_METHODS
+
+#undef TDataWriter
+#undef TData
+
+#undef TTYPENAME
+
+/* ----------------------------------------------------------------- */
+/* DDSDataReader
+*/
+
+/**
+<<IMPLEMENTATION >>
+
+Defines:   TDataReader, TDataSeq, TData
+*/
+
+/* Requires */
+#define TTYPENAME   Helloworld_HelloWordMessageTYPENAME
+
+/* Defines */
+#define TDataReader Helloworld_HelloWordMessageDataReader
+#define TDataSeq    Helloworld_HelloWordMessageSeq
+#define TData       Helloworld_HelloWordMessage
+
+#define ENABLE_TDATAREADER_DATA_CONSISTENCY_CHECK_METHOD
+#include "dds_cpp/generic/dds_cpp_data_TDataReader.gen"
+#undef ENABLE_TDATAREADER_DATA_CONSISTENCY_CHECK_METHOD
+
+#undef TDataReader
+#undef TDataSeq
+#undef TData
+
+#undef TTYPENAME
+
+/* ----------------------------------------------------------------- */
+/* TypeSupport
+
+<<IMPLEMENTATION >>
+
+Requires:  TTYPENAME,
+TPlugin_new
+TPlugin_delete
+Defines:   TTypeSupport, TData, TDataReader, TDataWriter
+*/
+
+/* Requires */
+#define TTYPENAME    Helloworld_HelloWordMessageTYPENAME
+#define TPlugin_new  Helloworld_HelloWordMessagePlugin_new
+#define TPlugin_delete  Helloworld_HelloWordMessagePlugin_delete
+
+/* Defines */
+#define TTypeSupport Helloworld_HelloWordMessageTypeSupport
+#define TData        Helloworld_HelloWordMessage
+#define TDataReader  Helloworld_HelloWordMessageDataReader
+#define TDataWriter  Helloworld_HelloWordMessageDataWriter
+#define TGENERATE_SER_CODE
+#ifndef NDDS_STANDALONE_TYPE
+#define TGENERATE_TYPECODE
+#endif
+
+#include "dds_cpp/generic/dds_cpp_data_TTypeSupport.gen"
+
+#undef TTypeSupport
+#undef TData
+#undef TDataReader
+#undef TDataWriter
+#ifndef NDDS_STANDALONE_TYPE
+#undef TGENERATE_TYPECODE
+#endif
+#undef TGENERATE_SER_CODE
+#undef TTYPENAME
+#undef TPlugin_new
+#undef TPlugin_delete
+
+/* ========================================================================= */
+/**
+<<IMPLEMENTATION>>
+
+Defines:   TData,
+TDataWriter,
+TDataReader,
+TTypeSupport
+
 Configure and implement 'Lane_LaneObject' support classes.
 
 Note: Only the #defined classes get defined

@@ -7,9 +7,8 @@
 
 #! /bin/sh
 
-if [[ -z "${ARCH}" ]]; then
-   ARCH=x64Linux4gcc7.3.0
-fi
+ARCH=x64Linux4gcc7.3.0
+
 EXE_DIR=../objs/${ARCH}
 
 
@@ -35,7 +34,7 @@ case ${TERM} in
 esac
 
 ### Make sure all component programs are available
-PROGRAMS="${EXE_DIR}/VisionSensor ${EXE_DIR}/Lidar ${EXE_DIR}/sensorFusion ${EXE_DIR}/hmi ${EXE_DIR}/collisionAvoidance ${EXE_DIR}/Platform ${EXE_DIR}/CameraImageDataSub ${EXE_DIR}/CameraImageDataPub"
+PROGRAMS="${EXE_DIR}/Lidar ${EXE_DIR}/VisionSensor ${EXE_DIR}/sensorFusion ${EXE_DIR}/hmi ${EXE_DIR}/collisionAvoidance ${EXE_DIR}/Platform ${EXE_DIR}/CameraImageDataSub ${EXE_DIR}/CameraImageDataPub ${EXE_DIR}/HelloWorld"
 
 for exe in ${PROGRAMS}
 do

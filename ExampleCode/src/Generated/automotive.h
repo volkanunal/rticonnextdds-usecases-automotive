@@ -10,8 +10,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the Code Generator User's Manual.
 */
 
-#ifndef automotive_2097331918_h
-#define automotive_2097331918_h
+#ifndef automotive_2097332004_h
+#define automotive_2097332004_h
 
 #ifndef NDDS_STANDALONE_TYPE
 #ifndef ndds_cpp_h
@@ -334,6 +334,93 @@ NDDSUSERDllExport
 RTIBool Alerts_DriverAlerts_copy(
     Alerts_DriverAlerts* dst,
     const Alerts_DriverAlerts* src);
+
+#if (defined(RTI_WIN32) || defined (RTI_WINCE) || defined(RTI_INTIME)) && defined(NDDS_USER_DLL_EXPORT)
+/* If the code is building on Windows, stop exporting symbols.
+*/
+#undef NDDSUSERDllExport
+#define NDDSUSERDllExport
+#endif
+
+extern "C" {
+
+    extern const char *Helloworld_HelloWordMessageTYPENAME;
+
+}
+
+struct Helloworld_HelloWordMessageSeq;
+#ifndef NDDS_STANDALONE_TYPE
+class Helloworld_HelloWordMessageTypeSupport;
+class Helloworld_HelloWordMessageDataWriter;
+class Helloworld_HelloWordMessageDataReader;
+#endif
+class Helloworld_HelloWordMessage 
+{
+  public:
+    typedef struct Helloworld_HelloWordMessageSeq Seq;
+    #ifndef NDDS_STANDALONE_TYPE
+    typedef Helloworld_HelloWordMessageTypeSupport TypeSupport;
+    typedef Helloworld_HelloWordMessageDataWriter DataWriter;
+    typedef Helloworld_HelloWordMessageDataReader DataReader;
+    #endif
+
+    DDS_Char *   msg ;
+
+};
+#if (defined(RTI_WIN32) || defined (RTI_WINCE) || defined(RTI_INTIME)) && defined(NDDS_USER_DLL_EXPORT)
+/* If the code is building on Windows, start exporting symbols.
+*/
+#undef NDDSUSERDllExport
+#define NDDSUSERDllExport __declspec(dllexport)
+#endif
+
+#ifndef NDDS_STANDALONE_TYPE
+NDDSUSERDllExport DDS_TypeCode * Helloworld_HelloWordMessage_get_typecode(void); /* Type code */
+NDDSUSERDllExport RTIXCdrTypePlugin *Helloworld_HelloWordMessage_get_type_plugin_info(void);
+NDDSUSERDllExport RTIXCdrSampleAccessInfo *Helloworld_HelloWordMessage_get_sample_access_info(void);
+NDDSUSERDllExport RTIXCdrSampleAccessInfo *Helloworld_HelloWordMessage_get_sample_seq_access_info(void);
+#endif
+
+DDS_SEQUENCE(Helloworld_HelloWordMessageSeq, Helloworld_HelloWordMessage);
+
+NDDSUSERDllExport
+RTIBool Helloworld_HelloWordMessage_initialize(
+    Helloworld_HelloWordMessage* self);
+
+NDDSUSERDllExport
+RTIBool Helloworld_HelloWordMessage_initialize_ex(
+    Helloworld_HelloWordMessage* self,RTIBool allocatePointers,RTIBool allocateMemory);
+
+NDDSUSERDllExport
+RTIBool Helloworld_HelloWordMessage_initialize_w_params(
+    Helloworld_HelloWordMessage* self,
+    const struct DDS_TypeAllocationParams_t * allocParams);  
+
+NDDSUSERDllExport
+RTIBool Helloworld_HelloWordMessage_finalize_w_return(
+    Helloworld_HelloWordMessage* self);
+
+NDDSUSERDllExport
+void Helloworld_HelloWordMessage_finalize(
+    Helloworld_HelloWordMessage* self);
+
+NDDSUSERDllExport
+void Helloworld_HelloWordMessage_finalize_ex(
+    Helloworld_HelloWordMessage* self,RTIBool deletePointers);
+
+NDDSUSERDllExport
+void Helloworld_HelloWordMessage_finalize_w_params(
+    Helloworld_HelloWordMessage* self,
+    const struct DDS_TypeDeallocationParams_t * deallocParams);
+
+NDDSUSERDllExport
+void Helloworld_HelloWordMessage_finalize_optional_members(
+    Helloworld_HelloWordMessage* self, RTIBool deletePointers);  
+
+NDDSUSERDllExport
+RTIBool Helloworld_HelloWordMessage_copy(
+    Helloworld_HelloWordMessage* dst,
+    const Helloworld_HelloWordMessage* src);
 
 #if (defined(RTI_WIN32) || defined (RTI_WINCE) || defined(RTI_INTIME)) && defined(NDDS_USER_DLL_EXPORT)
 /* If the code is building on Windows, stop exporting symbols.
@@ -2260,6 +2347,11 @@ namespace rti {
 
         template <>
         struct type_code<Alerts_DriverAlerts> {
+            static const RTIXCdrTypeCode * get();
+        };
+
+        template <>
+        struct type_code<Helloworld_HelloWordMessage> {
             static const RTIXCdrTypeCode * get();
         };
 

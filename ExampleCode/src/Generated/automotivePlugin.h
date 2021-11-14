@@ -10,8 +10,8 @@ For more information, type 'rtiddsgen -help' at a command shell
 or consult the Code Generator User's Manual.
 */
 
-#ifndef automotivePlugin_2097331918_h
-#define automotivePlugin_2097331918_h
+#ifndef automotivePlugin_2097332004_h
+#define automotivePlugin_2097332004_h
 
 #include "automotive.h"
 
@@ -425,6 +425,168 @@ extern "C"{
 
     NDDSUSERDllExport extern void
     Alerts_DriverAlertsPlugin_delete(struct PRESTypePlugin *);
+
+    #define Helloworld_HelloWordMessagePlugin_get_sample PRESTypePluginDefaultEndpointData_getSample 
+
+    #define Helloworld_HelloWordMessagePlugin_get_buffer PRESTypePluginDefaultEndpointData_getBuffer 
+    #define Helloworld_HelloWordMessagePlugin_return_buffer PRESTypePluginDefaultEndpointData_returnBuffer
+
+    #define Helloworld_HelloWordMessagePlugin_create_sample PRESTypePluginDefaultEndpointData_createSample 
+    #define Helloworld_HelloWordMessagePlugin_destroy_sample PRESTypePluginDefaultEndpointData_deleteSample 
+
+    /* --------------------------------------------------------------------------------------
+    Support functions:
+    * -------------------------------------------------------------------------------------- */
+
+    NDDSUSERDllExport extern Helloworld_HelloWordMessage*
+    Helloworld_HelloWordMessagePluginSupport_create_data_w_params(
+        const struct DDS_TypeAllocationParams_t * alloc_params);
+
+    NDDSUSERDllExport extern Helloworld_HelloWordMessage*
+    Helloworld_HelloWordMessagePluginSupport_create_data_ex(RTIBool allocate_pointers);
+
+    NDDSUSERDllExport extern Helloworld_HelloWordMessage*
+    Helloworld_HelloWordMessagePluginSupport_create_data(void);
+
+    NDDSUSERDllExport extern RTIBool 
+    Helloworld_HelloWordMessagePluginSupport_copy_data(
+        Helloworld_HelloWordMessage *out,
+        const Helloworld_HelloWordMessage *in);
+
+    NDDSUSERDllExport extern void 
+    Helloworld_HelloWordMessagePluginSupport_destroy_data_w_params(
+        Helloworld_HelloWordMessage *sample,
+        const struct DDS_TypeDeallocationParams_t * dealloc_params);
+
+    NDDSUSERDllExport extern void 
+    Helloworld_HelloWordMessagePluginSupport_destroy_data_ex(
+        Helloworld_HelloWordMessage *sample,RTIBool deallocate_pointers);
+
+    NDDSUSERDllExport extern void 
+    Helloworld_HelloWordMessagePluginSupport_destroy_data(
+        Helloworld_HelloWordMessage *sample);
+
+    NDDSUSERDllExport extern void 
+    Helloworld_HelloWordMessagePluginSupport_print_data(
+        const Helloworld_HelloWordMessage *sample,
+        const char *desc,
+        unsigned int indent);
+
+    /* ----------------------------------------------------------------------------
+    Callback functions:
+    * ---------------------------------------------------------------------------- */
+
+    NDDSUSERDllExport extern PRESTypePluginParticipantData 
+    Helloworld_HelloWordMessagePlugin_on_participant_attached(
+        void *registration_data, 
+        const struct PRESTypePluginParticipantInfo *participant_info,
+        RTIBool top_level_registration, 
+        void *container_plugin_context,
+        RTICdrTypeCode *typeCode);
+
+    NDDSUSERDllExport extern void 
+    Helloworld_HelloWordMessagePlugin_on_participant_detached(
+        PRESTypePluginParticipantData participant_data);
+
+    NDDSUSERDllExport extern PRESTypePluginEndpointData 
+    Helloworld_HelloWordMessagePlugin_on_endpoint_attached(
+        PRESTypePluginParticipantData participant_data,
+        const struct PRESTypePluginEndpointInfo *endpoint_info,
+        RTIBool top_level_registration, 
+        void *container_plugin_context);
+
+    NDDSUSERDllExport extern void 
+    Helloworld_HelloWordMessagePlugin_on_endpoint_detached(
+        PRESTypePluginEndpointData endpoint_data);
+
+    NDDSUSERDllExport extern void    
+    Helloworld_HelloWordMessagePlugin_return_sample(
+        PRESTypePluginEndpointData endpoint_data,
+        Helloworld_HelloWordMessage *sample,
+        void *handle);    
+
+    NDDSUSERDllExport extern RTIBool 
+    Helloworld_HelloWordMessagePlugin_copy_sample(
+        PRESTypePluginEndpointData endpoint_data,
+        Helloworld_HelloWordMessage *out,
+        const Helloworld_HelloWordMessage *in);
+
+    /* ----------------------------------------------------------------------------
+    (De)Serialize functions:
+    * ------------------------------------------------------------------------- */
+
+    NDDSUSERDllExport extern RTIBool
+    Helloworld_HelloWordMessagePlugin_serialize_to_cdr_buffer(
+        char * buffer,
+        unsigned int * length,
+        const Helloworld_HelloWordMessage *sample); 
+
+    NDDSUSERDllExport extern RTIBool
+    Helloworld_HelloWordMessagePlugin_serialize_to_cdr_buffer_ex(
+        char *buffer,
+        unsigned int *length,
+        const Helloworld_HelloWordMessage *sample,
+        DDS_DataRepresentationId_t representation);
+
+    NDDSUSERDllExport extern RTIBool
+    Helloworld_HelloWordMessagePlugin_deserialize_from_cdr_buffer(
+        Helloworld_HelloWordMessage *sample,
+        const char * buffer,
+        unsigned int length);    
+    #ifndef NDDS_STANDALONE_TYPE
+    NDDSUSERDllExport extern DDS_ReturnCode_t
+    Helloworld_HelloWordMessagePlugin_data_to_string(
+        const Helloworld_HelloWordMessage *sample,
+        char *str,
+        DDS_UnsignedLong *str_size, 
+        const struct DDS_PrintFormatProperty *property);    
+    #endif
+
+    NDDSUSERDllExport extern unsigned int 
+    Helloworld_HelloWordMessagePlugin_get_serialized_sample_max_size(
+        PRESTypePluginEndpointData endpoint_data,
+        RTIBool include_encapsulation,
+        RTIEncapsulationId encapsulation_id,
+        unsigned int current_alignment);
+
+    /* --------------------------------------------------------------------------------------
+    Key Management functions:
+    * -------------------------------------------------------------------------------------- */
+    NDDSUSERDllExport extern PRESTypePluginKeyKind 
+    Helloworld_HelloWordMessagePlugin_get_key_kind(void);
+
+    NDDSUSERDllExport extern unsigned int 
+    Helloworld_HelloWordMessagePlugin_get_serialized_key_max_size(
+        PRESTypePluginEndpointData endpoint_data,
+        RTIBool include_encapsulation,
+        RTIEncapsulationId encapsulation_id,
+        unsigned int current_alignment);
+
+    NDDSUSERDllExport extern unsigned int 
+    Helloworld_HelloWordMessagePlugin_get_serialized_key_max_size_for_keyhash(
+        PRESTypePluginEndpointData endpoint_data,
+        RTIEncapsulationId encapsulation_id,
+        unsigned int current_alignment);
+
+    NDDSUSERDllExport extern RTIBool 
+    Helloworld_HelloWordMessagePlugin_deserialize_key(
+        PRESTypePluginEndpointData endpoint_data,
+        Helloworld_HelloWordMessage ** sample,
+        RTIBool * drop_sample,
+        struct RTICdrStream *stream,
+        RTIBool deserialize_encapsulation,
+        RTIBool deserialize_key,
+        void *endpoint_plugin_qos);
+
+    NDDSUSERDllExport extern
+    struct RTIXCdrInterpreterPrograms * Helloworld_HelloWordMessagePlugin_get_programs(void);
+
+    /* Plugin Functions */
+    NDDSUSERDllExport extern struct PRESTypePlugin*
+    Helloworld_HelloWordMessagePlugin_new(void);
+
+    NDDSUSERDllExport extern void
+    Helloworld_HelloWordMessagePlugin_delete(struct PRESTypePlugin *);
 
     /* ----------------------------------------------------------------------------
     (De)Serialize functions:
@@ -3707,5 +3869,5 @@ extern "C"{
 #define NDDSUSERDllExport
 #endif
 
-#endif /* automotivePlugin_2097331918_h */
+#endif /* automotivePlugin_2097332004_h */
 
